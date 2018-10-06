@@ -1,0 +1,62 @@
+A.
+
+result of $ ll:
+
+-rw-rw-r-- 1 user1 instructor 29 Oct  5  2018 class1_grades.txt
+-rw-rw-r-- 1 user1 instructor 29 Oct  5  2018 class2_grades.txt
+
+Commands I used:
+
+chown user1 *.txt
+sudo groupadd instructor
+sudo usermod -a -G instructor user1
+sudo usermod -a -G instructor user2
+sudo usermod -a -G instructor user3
+
+sudo chmod u+w *.txt
+sudo chmod g+w *.txt
+
+This does not give all of the permissions required because both TA's will be able to access both classes and both groups of students will be able to view both classes. Just by using these commands, the proposed scheme cannot be completed
+
+B.
+
+result of $ getfacl *.txt:
+
+# file: class1_grades.txt
+# owner: user1
+# group: instructor
+user::rw-
+user:user2:rw-
+user:user4:r--
+group::rw-
+mask::rw-
+other::---
+
+# file: class2_grades.txt
+# owner: user1
+# group: instructor
+user::rw-
+user:user3:rw-
+user:user5:r--
+group::rw-
+mask::rw-
+other::---
+
+Commands I used:
+
+chmod o-rw *.txt
+
+sudo gpasswd -d user2 instructor
+sudo gpasswd -d user3 instructor
+
+sudo setfacl -m u:user2:rw class1_grades.txt
+sudo setfacl -m u:user3:rw class2_grades.txt
+sudo setfacl -m u:user4:r class1_grades.txt
+sudo setfacl -m u:user5:r class2_grades.txt
+
+
+
+
+
+
+
